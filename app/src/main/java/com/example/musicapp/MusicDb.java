@@ -76,11 +76,6 @@ public class MusicDb extends SQLiteOpenHelper {
                 "create table music " +
                         "(id integer primary key, name text,icon text,rate integer,url text)"
         );
-
-        Song s1 = new Song();
-        addSong(s1);
-        Song s2 = new Song();
-        addSong(s2);
     }
 
     @Override

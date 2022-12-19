@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav.xml"
     app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.musicapp.HomeFragment"
+        tools:layout="@layout/home_fragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_musicPlayerFragment"
@@ -14,6 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/musicPlayerFragment"
+        tools:layout="@layout/music_player_fragment"
         android:name="com.example.musicapp.MusicPlayerFragment"
         android:label="MusicPlayerFragment" />
 </navigation>
