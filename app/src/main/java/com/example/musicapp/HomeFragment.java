@@ -1,8 +1,10 @@
 package com.example.musicapp;
 
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -13,14 +15,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
 /**
- * Author  : Bhuvaneshvar
+ * Author  : Mohit
  * Project : MusicApp
  * Date    : 10:20 PM
  **/
@@ -28,6 +29,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
     private MusicDb musicDb;
     private static final String TAG = "HomeFragment";
+    private Song lastSong;
 
     public HomeFragment() {
         super(R.layout.home_fragment);
@@ -38,7 +40,7 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         musicDb = new MusicDb(getContext());
-
+        setHasOptionsMenu(true);
         List<Song> allSong = musicDb.getAllSong();
         try {
             if (allSong.isEmpty()) {
@@ -66,6 +68,8 @@ public class HomeFragment extends Fragment {
                     gotoPlayer(s1);
                 }
             });
+
+            lastSong = s1;
 
             ImageView iv1 = view.findViewById(R.id.iv_album_art1);
             TextView song1 = view.findViewById(R.id.tv_name1);
@@ -128,6 +132,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void gotoPlayer(Song s) {
+        lastSong = s;
         Bundle bundle = new Bundle();
         bundle.putSerializable("song", s);
         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_main);
@@ -137,5 +142,20 @@ public class HomeFragment extends Fragment {
     public Drawable getImage(String nm) {
         if (nm == null) return null;
         return getResources().getDrawable(getResources().getIdentifier(nm, "drawable", getContext().getPackageName()));
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.media_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_open_media) {
+            gotoPlayer(lastSong);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

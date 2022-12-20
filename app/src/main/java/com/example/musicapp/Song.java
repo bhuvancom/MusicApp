@@ -3,7 +3,7 @@ package com.example.musicapp;
 import java.io.Serializable;
 
 /**
- * Author  : Bhuvaneshvar
+ * Author  : Mohit
  * Project : MusicApp
  * Date    : 10:29 PM
  **/
