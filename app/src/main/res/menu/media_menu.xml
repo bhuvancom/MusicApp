@@ -3,4 +3,8 @@
     <item
         android:id="@+id/menu_open_media"
         android:title="Open Last played" />
+    <item
+        android:id="@+id/menu_pop_notification"
+        android:title="Pop notification" />
+
 </menu>

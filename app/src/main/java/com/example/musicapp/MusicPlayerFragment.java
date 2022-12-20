@@ -6,8 +6,8 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +29,9 @@ public class MusicPlayerFragment extends Fragment implements MediaPlayer.OnPrepa
     private MusicDb musicDb;
     private static final String TAG = "MusicPlayerFragment";
     private ImageView albumArt;
-    private ImageView btn;
+    private Button btnPlay;
+    private Button btnPause;
+    private Button btnStop;
     private TextView title;
 
     AudioManager audioManager;
@@ -39,6 +41,7 @@ public class MusicPlayerFragment extends Fragment implements MediaPlayer.OnPrepa
         mediaPlayer.stop();
         mediaPlayer.reset();
         mediaPlayer.setDataSource(song.url);
+        NotificationMohit.showNotification(song, getContext());
     }
 
     private void init() throws IOException {
@@ -62,6 +65,8 @@ public class MusicPlayerFragment extends Fragment implements MediaPlayer.OnPrepa
         mediaPlayer.setAudioAttributes(audioAttributes);
         mediaPlayer.setDataSource(song.url);
         mediaPlayer.prepareAsync();
+
+        NotificationMohit.showNotification(song, getContext());
     }
 
     public MusicPlayerFragment() {
@@ -76,30 +81,35 @@ public class MusicPlayerFragment extends Fragment implements MediaPlayer.OnPrepa
         } else {
             if (mediaPlayer != null) mediaPlayer.start();
         }
-        togglePlayBackIcon();
     }
 
-    private void togglePlayBackIcon() {
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-            btn.setImageResource(R.drawable.ic_baseline_pause_circle_filled_24);
-        } else {
-            btn.setImageResource(R.drawable.ic_baseline_play_circle_filled_24);
-        }
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         albumArt = view.findViewById(R.id.iv_album_art);
-        btn = view.findViewById(R.id.btn_pause);
+        btnPause = view.findViewById(R.id.btn_pause);
+        btnPlay = view.findViewById(R.id.btn_play);
+        btnStop = view.findViewById(R.id.btn_stop);
         title = view.findViewById(R.id.title);
 
-        togglePlayBackIcon();
         Toast.makeText(getContext(), "Preparing", Toast.LENGTH_SHORT).show();
-        btn.setOnClickListener(new View.OnClickListener() {
+        btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toggle();
+                mediaPlayer.stop();
+            }
+        });
+        btnPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mediaPlayer.start();
+            }
+        });
+        btnPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mediaPlayer.pause();
             }
         });
 
@@ -125,7 +135,6 @@ public class MusicPlayerFragment extends Fragment implements MediaPlayer.OnPrepa
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
         mediaPlayer.start();
-        togglePlayBackIcon();
     }
 
     @Override

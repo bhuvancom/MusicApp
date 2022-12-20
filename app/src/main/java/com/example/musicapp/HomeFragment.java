@@ -155,6 +155,9 @@ public class HomeFragment extends Fragment {
         if (item.getItemId() == R.id.menu_open_media) {
             gotoPlayer(lastSong);
             return true;
+        } else if (item.getItemId() == R.id.menu_pop_notification) {
+            NotificationMohit.showPopup(getContext());
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

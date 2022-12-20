@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
         navController = nh.getNavController();
         NavigationUI.setupActionBarWithNavController(this, navController);
+        NotificationMohit.init(this);
     }
 
     @Override
